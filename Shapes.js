@@ -1,5 +1,5 @@
 const MARKER_SIZE = 10; // size of the marker rectangle
-const MARKER_COLOR = 'red'; // color of the marker
+const MARKER_COLOR = 'blue'; // color of the marker
 class Point2D {
     constructor(x, y) {
         this.x = x;
@@ -191,9 +191,6 @@ class Triangle extends AbstractShape {
         function check(x, y, p2, p3) {
             return (x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (y - p3.y);
         }
-    }
-    area(p1, p2, p3) {
-        return Math.abs((p1.x * (p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y)) / 2.0);
     }
 }
 export class TriangleFactory {

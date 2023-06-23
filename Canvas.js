@@ -29,7 +29,6 @@ export class Canvas {
     createMouseHandler(methodName, canvasDomElement, toolArea) {
         return function (e) {
             e = e || window.event;
-            let self = this;
             if ('object' === typeof e) {
                 const btnCode = e.button, x = e.pageX - canvasDomElement.offsetLeft, y = e.pageY - canvasDomElement.offsetTop, ss = toolArea.getSelectedShape();
                 // if left mouse button is pressed,
@@ -37,7 +36,7 @@ export class Canvas {
                 if (e.button === 0 && ss) {
                     const m = ss[methodName];
                     // This in the shapeFactory should be the factory itself.
-                    m.call(ss, x, y);
+                    m.call(ss, x, y, e);
                 }
             }
         };

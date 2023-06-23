@@ -49,7 +49,6 @@ export class Canvas implements ShapeManager {
     createMouseHandler(methodName: string, canvasDomElement, toolArea) {
         return function (e) {
             e = e || window.event;
-            let self = this;
 
             if ('object' === typeof e) {
                 const btnCode = e.button,
@@ -61,7 +60,7 @@ export class Canvas implements ShapeManager {
                 if (e.button === 0 && ss) {
                     const m = ss[methodName];
                     // This in the shapeFactory should be the factory itself.
-                    m.call(ss, x, y);
+                    m.call(ss, x, y, e);
                 }
             }
         }

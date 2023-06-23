@@ -1,7 +1,7 @@
 import {Shape, ShapeFactory, ShapeManager} from "./types.js";
 
 const MARKER_SIZE = 10;  // size of the marker rectangle
-const MARKER_COLOR = 'red';  // color of the marker
+const MARKER_COLOR = 'blue';  // color of the marker
 
 class Point2D {
     constructor(readonly x: number, readonly y: number) {}
@@ -237,9 +237,6 @@ class Triangle extends AbstractShape implements Shape {
         }
     }
 
-    private area(p1: Point2D, p2: Point2D, p3: Point2D): number {
-        return Math.abs((p1.x*(p2.y-p3.y) + p2.x*(p3.y-p1.y) + p3.x*(p1.y-p2.y))/2.0);
-    }
 }
 export class TriangleFactory implements ShapeFactory {
     public label: string = "Dreieck";
