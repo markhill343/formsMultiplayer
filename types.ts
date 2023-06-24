@@ -3,7 +3,9 @@ export interface Shape {
     fillColour: string;
     lineColour: string;
     draw(ctx: CanvasRenderingContext2D, IsMarked: boolean, selectionColor: string);
-    isMarked(x: number, y: number ): boolean
+    isMarked(x: number, y: number ): boolean;
+    setFillColour(colour: string);
+    setLineColour(colour: string);
 }
 
 export interface ShapeManager {

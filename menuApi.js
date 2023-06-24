@@ -1,7 +1,7 @@
-//Immediately-Invoked Function Expression (IIFE) runs as soon as defined 
+//Immediately-Invoked Function Expression (IIFE) runs as soon as defined
 // used for creating a new scope
 export var MenuApi = (function() {
-    //function for creating a new menus -> 
+    //function for creating a new menus ->
     //div element is for possible styling
     //returns methods for changing the menu and its items
     function createMenu() {
@@ -17,7 +17,17 @@ export var MenuApi = (function() {
 
         document.body.appendChild(menuElement);
 
-        //add a element for the background  
+        document.body.addEventListener('click', function(e) {
+            // if the click event target is not part of the context menu
+            if (!menuElement.contains(e.target)) {
+                // hide the context menu
+                menuElement.style.display = 'none';
+                // turn off the background
+                background.style.display = 'none';
+            }
+        });
+
+        //add a element for the background
         var background = document.createElement('div');
         background.className = 'background';
         document.body.appendChild(background);
@@ -31,10 +41,11 @@ export var MenuApi = (function() {
                 //turn on the background
                 background.style.display = 'block';
                 console.log('block')
+                return menuElement
             },
             hide: function() {
                 menuElement.style.display = 'none';
-                //turn off the background 
+                //turn off the background
                 background.style.display = 'none';
             },
             addItems: function() {
@@ -91,11 +102,10 @@ export var MenuApi = (function() {
         };
     }
 
-    // your other code here...
-
     function createRadioOption(label, optionList, preSelection, canvas, fill) {
         var radioSelectionDiv = document.createElement("div");
         radioSelectionDiv.className = 'menuItem';
+        console.log("radio button");
 
         var radioSelectionLabel = document.createElement("label");
         radioSelectionLabel.textContent = label;
@@ -119,13 +129,20 @@ export var MenuApi = (function() {
             let divRadioButton = document.createElement("div");
 
             divRadioButton.addEventListener("click", () => {
-                let selectedShapes = canvas.selectedShapes;
-                for (const shapesId in selectedShapes) {
-                    const shape = selectedShapes[shapesId];
+                console.log("button pressed!");
+                console.log(id);
+                let markedShapes = canvas.markedShapes;
+                console.log(canvas.markedShapes);
+                for (const shapesId in markedShapes) {
+                    console.log("in loop");
+                    console.log(shapesId);
+                    const shape = markedShapes[shapesId];
                     if (fill) {
-                        shape.setFillColor(id);
+                        console.log("setting fill colour")
+                        shape.setFillColour(id);
                     } else {
-                        shape.setOutlineColor(id);
+                        console.log("setting line color")
+                        shape.setLineColour(id);
                     }
                     canvas.addShape(shape);
                 }

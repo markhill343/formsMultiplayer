@@ -29,6 +29,9 @@ function init() {
         isShapeOnClickedPoint(x: number, y: number) {
             return canvas.isShapeOnClickedPoint(x, y)
         },
+        iterateShapes() {
+            return canvas.iterateShapes()
+        },
 
 
     };

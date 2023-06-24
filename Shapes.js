@@ -12,9 +12,11 @@ class AbstractShape {
     }
     setFillColour(colour) {
         this.fillColour = colour;
+        console.log("set fillll colour!!!!!!!!");
     }
     setLineColour(colour) {
         this.lineColour = colour;
+        console.log("setline colour!!!!!!!!");
     }
 }
 AbstractShape.counter = 0;
@@ -57,6 +59,7 @@ export class Line extends AbstractShape {
         this.to = to;
     }
     draw(ctx, IsMarked) {
+        ctx.strokeStyle = this.lineColour;
         ctx.beginPath();
         ctx.moveTo(this.from.x, this.from.y);
         ctx.lineTo(this.to.x, this.to.y);
@@ -95,9 +98,12 @@ class Circle extends AbstractShape {
         this.radius = radius;
     }
     draw(ctx, IsMarked) {
+        ctx.strokeStyle = this.lineColour;
+        ctx.fillStyle = this.fillColour;
         ctx.beginPath();
         ctx.arc(this.center.x, this.center.y, this.radius, 0, 2 * Math.PI);
         ctx.stroke();
+        ctx.fill();
         if (IsMarked) {
             ctx.fillStyle = MARKER_COLOR;
             ctx.fillRect(this.center.x - this.radius - MARKER_SIZE / 2, this.center.y - MARKER_SIZE / 2, MARKER_SIZE, MARKER_SIZE);
@@ -133,9 +139,14 @@ class Rectangle extends AbstractShape {
         this.to = to;
     }
     draw(ctx, IsMarked) {
+        ctx.fillStyle = this.fillColour;
+        ctx.strokeStyle = this.lineColour;
+        console.log("fill colour inside rect");
+        console.log(this.fillColour);
+        console.log(this.lineColour);
         ctx.beginPath();
         ctx.strokeRect(this.from.x, this.from.y, this.to.x - this.from.x, this.to.y - this.from.y);
-        ctx.stroke();
+        ctx.fill();
         if (IsMarked) {
             ctx.fillStyle = MARKER_COLOR;
             ctx.fillRect(this.from.x - MARKER_SIZE / 2, this.from.y - MARKER_SIZE / 2, MARKER_SIZE, MARKER_SIZE);
@@ -166,11 +177,14 @@ class Triangle extends AbstractShape {
         this.p3 = p3;
     }
     draw(ctx, IsMarked) {
+        ctx.strokeStyle = this.lineColour;
+        ctx.fillStyle = this.fillColour;
         ctx.beginPath();
         ctx.moveTo(this.p1.x, this.p1.y);
         ctx.lineTo(this.p2.x, this.p2.y);
         ctx.lineTo(this.p3.x, this.p3.y);
         ctx.lineTo(this.p1.x, this.p1.y);
+        ctx.fill();
         ctx.stroke();
         if (IsMarked) {
             ctx.fillStyle = MARKER_COLOR;

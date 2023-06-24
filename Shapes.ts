@@ -17,13 +17,15 @@ class AbstractShape {
 
     setFillColour(colour: string) {
         this.fillColour = colour;
+        console.log("set fillll colour!!!!!!!!");
     }
 
     setLineColour(colour: string) {
         this.lineColour = colour;
+        console.log("setline colour!!!!!!!!");
     }
-
 }
+
 abstract class AbstractFactory<T extends Shape> {
     private from: Point2D;
     private tmpTo: Point2D;
@@ -71,6 +73,7 @@ export class Line extends AbstractShape implements Shape {
     }
 
     draw(ctx: CanvasRenderingContext2D, IsMarked?: boolean) {
+        ctx.strokeStyle = this.lineColour;
         ctx.beginPath();
         ctx.moveTo(this.from.x, this.from.y);
         ctx.lineTo(this.to.x, this.to.y);
@@ -121,9 +124,13 @@ class Circle extends AbstractShape implements Shape {
         super();
     }
     draw(ctx: CanvasRenderingContext2D, IsMarked?: boolean) {
+        ctx.strokeStyle = this.lineColour;
+        ctx.fillStyle = this.fillColour;
+
         ctx.beginPath();
         ctx.arc(this.center.x,this.center.y,this.radius,0,2*Math.PI);
         ctx.stroke();
+        ctx.fill();
 
         if (IsMarked) {
             ctx.fillStyle = MARKER_COLOR;
@@ -168,10 +175,14 @@ class Rectangle extends AbstractShape implements Shape {
     }
 
     draw(ctx: CanvasRenderingContext2D, IsMarked?: boolean) {
+        ctx.fillStyle = this.fillColour;
+        ctx.strokeStyle = this.lineColour;
+        console.log("fill colour inside rect");
+        console.log(this.fillColour);
+        console.log(this.lineColour);
         ctx.beginPath();
-        ctx.strokeRect(this.from.x, this.from.y,
-            this.to.x - this.from.x, this.to.y - this.from.y);
-        ctx.stroke();
+        ctx.strokeRect(this.from.x, this.from.y, this.to.x - this.from.x, this.to.y - this.from.y);
+        ctx.fill();
 
         if (IsMarked) {
             ctx.fillStyle = MARKER_COLOR;
@@ -204,11 +215,14 @@ class Triangle extends AbstractShape implements Shape {
         super();
     }
     draw(ctx: CanvasRenderingContext2D, IsMarked?: boolean) {
+        ctx.strokeStyle = this.lineColour;
+        ctx.fillStyle = this.fillColour;
         ctx.beginPath();
         ctx.moveTo(this.p1.x, this.p1.y);
         ctx.lineTo(this.p2.x, this.p2.y);
         ctx.lineTo(this.p3.x, this.p3.y);
         ctx.lineTo(this.p1.x, this.p1.y);
+        ctx.fill();
         ctx.stroke();
 
         if (IsMarked) {

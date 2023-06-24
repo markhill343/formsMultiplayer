@@ -27,6 +27,9 @@ function init() {
         isShapeOnClickedPoint(x, y) {
             return canvas.isShapeOnClickedPoint(x, y);
         },
+        iterateShapes() {
+            return canvas.iterateShapes();
+        },
     };
     const shapesSelector = [
         new LineFactory(sm),

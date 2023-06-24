@@ -5,6 +5,7 @@ export class Canvas {
         this.shapes = new Map();
         this.markedShapes = [];
         this.clickedShapesOnPoint = [];
+        this.markedColour = 'rgb(0,255,115)';
         this.fillColour = 'transparent';
         this.lineColour = 'black';
         this.canvasDomElement = canvasDomElement;
@@ -43,12 +44,9 @@ export class Canvas {
         };
     }
     draw() {
-        // TODO: it there a better way to reset the canvas?
         this.setContext();
         this.ctx.beginPath();
-        this.ctx.fillStyle = 'lightgrey';
-        this.ctx.fillRect(0, 0, this.width, this.height);
-        this.ctx.stroke();
+        this.ctx.clearRect(0, 0, this.width, this.height);
         let colour;
         this.shapes.forEach((shape) => {
             let isMarked = false;
@@ -60,6 +58,7 @@ export class Canvas {
                 }
             }
             //setting to standard here
+            this.setCtxStandardState();
             shape.draw(this.ctx, isMarked, colour);
         });
     }
@@ -113,16 +112,50 @@ export class Canvas {
             this.draw();
         }
     }
+    changeShapeOrder(toForeGround) {
+        const shapeToMove = this.markedShapes[0];
+        // Remove the selected shape from its current position
+        this.removeShape(shapeToMove, false); // setting redraw to false
+        if (toForeGround) {
+            // If moving to the foreground, add the shape back to the end of the shapes map
+            this.addShape(shapeToMove);
+        }
+        else {
+            // If moving to the background, use doMoveToBackground to move it to the beginning of the shapes map
+            this.doMoveToBackground(shapeToMove);
+        }
+        // Add shape to selected shapes again
+        this.addMarkShape(shapeToMove);
+    }
+    doMoveToBackground(shapeToMove) {
+        // Create a new map that starts with the shape that should be at the start
+        const helperMap = new Map();
+        helperMap.set(shapeToMove.id, shapeToMove);
+        // Combine the new map with the existing shapes map
+        this.shapes = new Map([...helperMap, ...this.shapes]);
+        // Redraw the canvas
+        this.draw();
+    }
     iterateShapes() {
         if (this.clickedShapesOnPoint.length > 0) {
             let helper = this.markedShapes.length;
             let index = this.clickedShapesOnPoint.indexOf(this.markedShapes[helper - 1]);
-            if (this.clickedShapesOnPoint.length - 1 > index) {
-                if (this.markedShapes[helper - 1]) {
-                    this.unMarkShape(this.markedShapes[helper - 1]);
-                }
-                this.addMarkShape(this.clickedShapesOnPoint[0]);
+            // Unmark the currently marked shape
+            if (this.markedShapes[helper - 1]) {
+                this.unMarkShape(this.markedShapes[helper - 1]);
             }
+            // Determine the next shape to mark
+            let nextShapeToMark;
+            if (index < this.clickedShapesOnPoint.length - 1) {
+                // If we haven't reached the end of the array, mark the next shape
+                nextShapeToMark = this.clickedShapesOnPoint[index + 1];
+            }
+            else {
+                // If we've reached the end of the array, mark the first shape
+                nextShapeToMark = this.clickedShapesOnPoint[0];
+            }
+            // Mark the next shape
+            this.addMarkShape(nextShapeToMark);
         }
     }
     setupContextMenu() {
@@ -140,28 +173,29 @@ export class Canvas {
                 this.removeShape(shape, true);
             });
         });
-        /*
         const moveForeGroundItem = MenuApi.createItem("To Foreground", () => {
             if (this.markedShapes.length == 1) {
                 this.changeShapeOrder(true);
             }
         });
-
         const moveToBackGroundItem = MenuApi.createItem("To Background", () => {
             if (this.markedShapes.length == 1) {
                 this.changeShapeOrder(false);
             }
         });
-        */
         let radioColorOption = MenuApi.createRadioOption("Background color", { "transparent": "transparent", "red": "rot", "green": "grün", "blue": "blau", "black": "schwarz" }, currentFillColour, this, true);
         let radioLineOption = MenuApi.createRadioOption("Outline color", { "red": "rot", "green": "grün", "blue": "blau", "black": "schwarz" }, currentLineColour, this, false);
         let sep1 = MenuApi.createSeparator();
         let sep2 = MenuApi.createSeparator();
         let sep3 = MenuApi.createSeparator();
         let sep4 = MenuApi.createSeparator();
-        //menu.addItems(deleteItem, sep1, radioColorOption, sep2, radioLineOption, sep3, moveForeGroundItem, sep4, moveToBackGroundItem);
-        menu.addItems(deleteItem, sep1, radioColorOption, sep2, radioLineOption, sep3, sep4);
+        menu.addItems(deleteItem, sep1, radioColorOption, sep2, radioLineOption, sep3, moveForeGroundItem, sep4, moveToBackGroundItem);
         return menu;
+    }
+    setCtxStandardState() {
+        this.ctx.fillStyle = this.fillColour;
+        this.ctx.strokeStyle = this.lineColour;
+        this.ctx.save();
     }
 }
 //# sourceMappingURL=Canvas.js.map

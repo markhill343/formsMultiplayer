@@ -1,41 +1,48 @@
 .tools {
-    width: 100px;
+    width: 120px;
     float: left;
-    padding: 5px;
+    padding: 10px;
+    background-color: #F4F6F9;
+    border-right: 1px solid #DDE2E8;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .tools li {
-    padding: 5px;
+    padding: 10px;
     list-style: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    border-bottom: 1px solid #DDE2E8;
 }
 
 .tools li:hover {
-    color: cornflowerblue;
+    background-color: #E8EAF0;
+    color: #1A76D2;
     cursor: pointer;
 }
 
 .tools li.marked {
-    background-color: cornflowerblue;
+    background-color: #1A76D2;
     color: white;
 }
 
 #drawArea {
-    border:1px solid #000000;
+    border: 1px solid #DDE2E8;
     background-color: lightgrey;
 }
 
 #selectionTool {
     cursor: pointer;
-
 }
+
 .menu {
-    background-color: #333;
-    border: 1px solid #999;
+    background-color: #FFFFFF;
+    border: 1px solid #DDE2E8;
     border-radius: 5px;
     padding: 10px 0;
-    color: white;
+    color: #232323;
     width: 200px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
     position: fixed;
     z-index: 1000;
     display: none;
@@ -44,11 +51,15 @@
 .menu-item {
     padding: 10px 20px;
     cursor: pointer;
-    color: #fff;
+    color: #232323;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    transition: all 0.3s;
 }
 
 .menu-item:hover {
-    background-color: #555;
+    background-color: #F4F6F9;
+    color: #1A76D2;
 }
 
 /* adds formating for the background. z-index = 999 so that the background is always behind the menu */
