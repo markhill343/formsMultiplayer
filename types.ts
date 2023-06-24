@@ -12,7 +12,7 @@ export interface ShapeManager {
     markShape();
     markShapes();
     isShapeOnClickedPoint(x,y);
-    //iterateShapes();
+    iterateShapes();
 }
 
 export interface ShapeFactory {

@@ -1,5 +1,6 @@
 import {Shape, ShapeManager} from "./types.js";
 import {ToolArea} from "./ToolArea.js";
+import {MenuApi} from "./menuApi.js"
 
 export class Canvas implements ShapeManager {
     private ctx: CanvasRenderingContext2D;
@@ -11,8 +12,8 @@ export class Canvas implements ShapeManager {
     private markedShapes: Shape[] = [];
     private clickedShapesOnPoint: Shape[] = [];
     private markedColour: 'rgb(0,255,115)';
-    private fillColour: 'transparent';
-    private lineColour: 'black'
+    private fillColour: string = 'transparent';
+    private lineColour: string =  'black';
 
     constructor(canvasDomElement: HTMLCanvasElement,
                 toolArea: ToolArea) {
@@ -32,18 +33,19 @@ export class Canvas implements ShapeManager {
         this.canvasDomElement.addEventListener('click',
             this.createMouseHandler('handleMouseClick', this.canvasDomElement, toolArea));
 
-        /*
-        // event listener for the selection button
-        document.getElementById("selectionButton").addEventListener('click', () => {
-            this.selectionMode = !this.selectionMode;
-            if (this.selectionMode == true) {
-                console.log("selction mode activated")
 
-            }else{
-                console.log("selction mode deactivated")
+        this.canvasDomElement.addEventListener("contextmenu", ev => {
+            ev.preventDefault();
+            const toolSelection = toolArea.getSelectedShape();
+            if (toolSelection !== undefined) {
+                if (toolSelection.label === "Selektion") {
+                    let contextMenu: MenuApi = this.setupContextMenu();
+                    contextMenu.show(ev.clientX, ev.clientY);
+                }
             }
         });
-        */
+
+
     }
 
     createMouseHandler(methodName: string, canvasDomElement, toolArea) {
@@ -147,5 +149,78 @@ export class Canvas implements ShapeManager {
             this.draw();
         }
     }
-}
 
+    iterateShapes() {
+        if (this.clickedShapesOnPoint.length > 0) {
+            let helper = this.markedShapes.length;
+            let index = this.clickedShapesOnPoint.indexOf(this.markedShapes[helper-1]);
+
+            if (this.clickedShapesOnPoint.length - 1 > index) {
+                if (this.markedShapes[helper-1]) {
+                    this.unMarkShape(this.markedShapes[helper-1]);
+                }
+                this.addMarkShape(this.clickedShapesOnPoint[0]);
+            }
+        }
+    }
+
+    setupContextMenu() {
+        let currentFillColour = this.fillColour;
+        let currentLineColour = this.lineColour;
+
+        if (this.markedShapes.length < 2 && this.markedShapes[0] != undefined) {
+            if (this.markedShapes[0].fillColour != undefined)
+                currentFillColour = this.markedShapes[0].fillColour;
+            if (this.markedShapes[0].lineColour != undefined)
+                currentLineColour = this.markedShapes[0].lineColour;
+        }
+
+        let menu = MenuApi.createMenu();
+        let deleteItem = MenuApi.createItem("Delete", () => {
+            this.markedShapes.forEach((shape) => {
+                this.removeShape(shape, true);
+            });
+        });
+
+        /*
+        const moveForeGroundItem = MenuApi.createItem("To Foreground", () => {
+            if (this.markedShapes.length == 1) {
+                this.changeShapeOrder(true);
+            }
+        });
+
+        const moveToBackGroundItem = MenuApi.createItem("To Background", () => {
+            if (this.markedShapes.length == 1) {
+                this.changeShapeOrder(false);
+            }
+        });
+        */
+
+        let radioColorOption = MenuApi.createRadioOption(
+            "Background color",
+            {"transparent": "transparent", "red": "rot", "green": "grün", "blue": "blau", "black": "schwarz"},
+            currentFillColour,
+            this,
+            true,
+        );
+
+        let radioLineOption = MenuApi.createRadioOption(
+            "Outline color",
+            {"red": "rot", "green": "grün", "blue": "blau", "black": "schwarz"},
+            currentLineColour,
+            this,
+            false,
+        );
+
+        let sep1 = MenuApi.createSeparator();
+        let sep2 = MenuApi.createSeparator();
+        let sep3 = MenuApi.createSeparator();
+        let sep4 = MenuApi.createSeparator();
+
+        //menu.addItems(deleteItem, sep1, radioColorOption, sep2, radioLineOption, sep3, moveForeGroundItem, sep4, moveToBackGroundItem);
+        menu.addItems(deleteItem, sep1, radioColorOption, sep2, radioLineOption, sep3, sep4);
+
+        return menu;
+    }
+
+}

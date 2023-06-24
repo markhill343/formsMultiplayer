@@ -328,7 +328,7 @@ export class TriangleFactory implements ShapeFactory {
         if (e.ctrlKey) {
             this.shapeManager.markShapes();
         } else if (e.altKey) {
-            //this.shapeManager.iterateShapes();
+            this.shapeManager.iterateShapes();
         } else {
             this.shapeManager.markShape()
         }
