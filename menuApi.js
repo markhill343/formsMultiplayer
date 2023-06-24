@@ -11,6 +11,10 @@ export var MenuApi = (function() {
         menuElement.className = 'menu'
         menuElement.style.display = 'none';
         console.log('none')
+
+        // append the helper div to menuElement
+        menuElement.appendChild(helperDiv);
+
         document.body.appendChild(menuElement);
 
         //add a element for the background  
