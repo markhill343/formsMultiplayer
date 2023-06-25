@@ -198,4 +198,14 @@ export class Canvas {
         this.ctx.save();
     }
 }
+//quellen:
+//https://stackoverflow.com/questions/14979753/how-do-you-add-radio-buttons-to-menu-items
+//https://www.javascripttutorial.net/javascript-dom/javascript-appendchild/
+//https://www.w3schools.com/jsref/met_node_insertbefore.asph
+//https://www.w3schools.com/js/js_function_definition.asp
+//https://www.javascripttutorial.net/javascript-immediately-invoked-function-expression-iife/
+//https://www.sitepoint.com/building-custom-right-click-context-menu-javascript/
+//https://www.w3schools.com/jsref/event_oncontextmenu.asp
+//https://help.syncfusion.com/typescript/radiobutton/getting-started
+//https://github.com/vpysaran/react-typescript-radiobutton
 //# sourceMappingURL=Canvas.js.map

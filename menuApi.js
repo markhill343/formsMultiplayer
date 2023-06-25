@@ -27,7 +27,7 @@ export var MenuApi = (function() {
             }
         });
 
-        //add a element for the background
+        //add an element for the background
         var background = document.createElement('div');
         background.className = 'background';
         document.body.appendChild(background);
@@ -96,8 +96,7 @@ export var MenuApi = (function() {
     function createSeparator() {
         return {
             render: function() {
-                var separatorElement = document.createElement('hr');
-                return separatorElement;
+                return document.createElement('hr');
             }
         };
     }

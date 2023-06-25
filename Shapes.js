@@ -145,8 +145,8 @@ class Rectangle extends AbstractShape {
         console.log(this.fillColour);
         console.log(this.lineColour);
         ctx.beginPath();
+        ctx.fillRect(this.from.x, this.from.y, this.to.x - this.from.x, this.to.y - this.from.y);
         ctx.strokeRect(this.from.x, this.from.y, this.to.x - this.from.x, this.to.y - this.from.y);
-        ctx.fill();
         if (IsMarked) {
             ctx.fillStyle = MARKER_COLOR;
             ctx.fillRect(this.from.x - MARKER_SIZE / 2, this.from.y - MARKER_SIZE / 2, MARKER_SIZE, MARKER_SIZE);
