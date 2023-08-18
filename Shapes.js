@@ -1,12 +1,12 @@
 const MARKER_SIZE = 10; // size of the marker rectangle
 const MARKER_COLOR = 'blue'; // color of the marker
-class Point2D {
+export class Point2D {
     constructor(x, y) {
         this.x = x;
         this.y = y;
     }
 }
-class AbstractShape {
+export class AbstractShape {
     constructor() {
         this.id = AbstractShape.counter++;
     }
@@ -57,6 +57,7 @@ export class Line extends AbstractShape {
         super();
         this.from = from;
         this.to = to;
+        this.type = 'line';
     }
     draw(ctx, IsMarked) {
         ctx.strokeStyle = this.lineColour;
@@ -91,11 +92,12 @@ export class LineFactory extends AbstractFactory {
     handleMouseClick(x, y, e) {
     }
 }
-class Circle extends AbstractShape {
+export class Circle extends AbstractShape {
     constructor(center, radius) {
         super();
         this.center = center;
         this.radius = radius;
+        this.type = 'Circle';
     }
     draw(ctx, IsMarked) {
         ctx.strokeStyle = this.lineColour;
@@ -132,11 +134,12 @@ export class CircleFactory extends AbstractFactory {
     handleMouseClick(x, y, e) {
     }
 }
-class Rectangle extends AbstractShape {
+export class Rectangle extends AbstractShape {
     constructor(from, to) {
         super();
         this.from = from;
         this.to = to;
+        this.type = 'Rectangle';
     }
     draw(ctx, IsMarked) {
         ctx.fillStyle = this.fillColour;
@@ -169,12 +172,13 @@ export class RectangleFactory extends AbstractFactory {
     handleMouseClick(x, y, e) {
     }
 }
-class Triangle extends AbstractShape {
+export class Triangle extends AbstractShape {
     constructor(p1, p2, p3) {
         super();
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
+        this.type = 'Triangle';
     }
     draw(ctx, IsMarked) {
         ctx.strokeStyle = this.lineColour;

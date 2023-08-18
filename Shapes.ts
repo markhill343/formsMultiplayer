@@ -3,14 +3,17 @@ import {Shape, ShapeFactory, ShapeManager} from "./types.js";
 const MARKER_SIZE = 10;  // size of the marker rectangle
 const MARKER_COLOR = 'blue';  // color of the marker
 
-class Point2D {
+export class Point2D {
     constructor(readonly x: number, readonly y: number) {}
 }
-class AbstractShape {
+export class AbstractShape {
     private static counter: number = 0;
     readonly id: number;
     fillColour: string;
     lineColour: string;
+
+    order: number;
+
     constructor() {
         this.id = AbstractShape.counter++;
     }
@@ -68,6 +71,9 @@ abstract class AbstractFactory<T extends Shape> {
 
 }
 export class Line extends AbstractShape implements Shape {
+
+    public readonly type = 'line';
+
     constructor(readonly from: Point2D, readonly to: Point2D){
         super();
     }
@@ -119,7 +125,10 @@ export class LineFactory extends  AbstractFactory<Line> implements ShapeFactory 
     }
 
 }
-class Circle extends AbstractShape implements Shape {
+export class Circle extends AbstractShape implements Shape {
+
+    public readonly type = 'Circle';
+
     constructor(readonly center: Point2D, readonly radius: number){
         super();
     }
@@ -169,7 +178,10 @@ export class CircleFactory extends AbstractFactory<Circle> implements ShapeFacto
     handleMouseClick(x: number, y: number, e: MouseEvent) {
     }
 }
-class Rectangle extends AbstractShape implements Shape {
+export class Rectangle extends AbstractShape implements Shape {
+
+    public readonly type = 'Rectangle';
+
     constructor(readonly from: Point2D, readonly to: Point2D) {
         super();
     }
@@ -209,7 +221,9 @@ export class RectangleFactory extends AbstractFactory<Rectangle> implements Shap
     handleMouseClick(x: number, y: number, e: MouseEvent) {
     }
 }
-class Triangle extends AbstractShape implements Shape {
+export class Triangle extends AbstractShape implements Shape {
+
+    public readonly type = 'Triangle';
 
     constructor(readonly p1: Point2D, readonly p2: Point2D, readonly p3: Point2D) {
         super();

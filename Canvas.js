@@ -1,4 +1,5 @@
 import { MenuApi } from "./menuApi.js";
+import { Line, Rectangle, Circle, Triangle } from "./Shapes.js";
 export class Canvas {
     constructor(canvasDomElement, toolArea) {
         //Hold the shapes depending on the state of the shape
@@ -42,6 +43,32 @@ export class Canvas {
                 }
             }
         };
+    }
+    update(event) {
+        switch (event.type) {
+            case "addShape":
+                const shape = this.deserializeShape(event.shape);
+                if (shape.zOrder === -1) {
+                    // new Shape
+                    this.addShape(shape, event.redraw, event.isFinal);
+                }
+                else {
+                    this.addShape(shape, event.redraw, event.isFinal, shape.zOrder);
+                }
+                break;
+            case "removeShape":
+                this.removeShapeWithId(event.shapeId, event.redraw, event.isFinal);
+                break;
+            case 'selectShape':
+                this.selectShape(event.shapeId, event.redraw);
+                break;
+            case 'unselectShape':
+                this.unselectShape(event.shapeId, event.redraw);
+                break;
+            default:
+                console.warn(`Unknown event type: ${event.type}`);
+                break;
+        }
     }
     draw() {
         this.setContext();
@@ -196,6 +223,24 @@ export class Canvas {
         this.ctx.fillStyle = this.fillColour;
         this.ctx.strokeStyle = this.lineColour;
         this.ctx.save();
+    }
+    deserializeShape(shape) {
+        switch (shape.type) {
+            case 'Line':
+                let line = shape;
+                return new Line(line.from, line.to, line.id, line.bgColor, line.borderColor, line.order);
+            case 'Circle':
+                let circle = shape;
+                return new Circle(circle.center, circle.radius, circle.id, circle.bgColor, circle.borderColor, circle.order);
+            case 'Rectangle':
+                let rectangle = shape;
+                return new Rectangle(rectangle.from, rectangle.to, rectangle.id, rectangle.bgColor, rectangle.borderColor, rectangle.order);
+            case 'Triangle':
+                let triangle = shape;
+                return new Triangle(triangle.p1, triangle.p2, triangle.p3, triangle.id, triangle.bgColor, triangle.borderColor, triangle.order);
+            default:
+                throw new Error(`Unknown shape type: ${shape.type}`);
+        }
     }
 }
 //quellen:

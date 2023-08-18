@@ -1,6 +1,7 @@
 import { CircleFactory, LineFactory, RectangleFactory, TriangleFactory, SelectionFactory } from "./Shapes.js";
 import { ToolArea } from "./ToolArea.js";
 import { Canvas } from "./Canvas.js";
+export let clientId;
 function init() {
     const canvasDomElm = document.getElementById("drawArea");
     const menu = document.getElementsByClassName("tools");
