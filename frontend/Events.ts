@@ -1,5 +1,5 @@
-import {CanvasEventInterface, CanvasObserverInterface, ShapeEventInterface, Shape} from "./types";
-import {clientId} from "./init";
+import {CanvasEventInterface, CanvasObserverInterface, ShapeEventInterface, Shape} from "./types.js";
+import {clientId} from "./init.js";
 export class CanvasEvent implements CanvasEventInterface {
     canvasId: string;
     eventsCanvas: ShapeEventInterface[];

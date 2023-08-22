@@ -1,4 +1,4 @@
-import { clientId } from "./init";
+import { clientId } from "./init.js";
 export class CanvasEvent {
     constructor(canvasId, eventsCanvas = []) {
         this.canvasId = canvasId;
