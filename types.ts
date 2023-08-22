@@ -11,12 +11,15 @@ export interface Shape {
 }
 
 export interface ShapeManager {
-    addShape(shape: Shape);
+    addShape(shape: Shape, redraw?: boolean, Final?: boolean, index?: number);
     removeShape(shape: Shape, redraw: boolean);
-    markShape();
-    markShapes();
+    removeShapeWithId(id?: number, redraw?: boolean, Final?: boolean);
+    markShape(id?: number, redraw?: boolean);
+    markShapes(id?: number, redraw?: boolean);
+    unMarkShape(shape: Shape, id?: number, redraw?: boolean);
     isShapeOnClickedPoint(x,y);
     iterateShapes();
+    getMarkedShapes(): Shape[];
 }
 
 export interface ShapeFactory {

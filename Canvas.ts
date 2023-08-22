@@ -184,7 +184,7 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
         return isShapeOnPoint;
     }
 
-    markShape() {
+    markShape(id: number = null, redraw: boolean = true) {
         this.markedShapes.forEach(shape => {
             this.unMarkShape(shape);
         });
@@ -193,7 +193,7 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
         }
     }
 
-    markShapes() {
+    markShapes(id: number = null, redraw: boolean = true) {
         if (this.clickedShapesOnPoint.length > 0) {
             this.addMarkShape(this.clickedShapesOnPoint[0]);
         }
@@ -207,13 +207,18 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
         }
     }
 
-    private unMarkShape(shape2UnMark: Shape) {
+    unMarkShape(shape2UnMark: Shape,id: number = null, redraw: boolean = true) {
         const shape = this.shapes.get(shape2UnMark.id);
         if (shape !== undefined) {
             this.markedShapes = this.markedShapes.filter(shape => shape.id !== shape2UnMark.id);
             this.draw();
         }
     }
+
+    getMarkedShapes(): Shape[] {
+        return this.markedShapes;
+    }
+
 
     private changeShapeOrder(toForeGround: boolean) {
         const shapeToMove: Shape = this.markedShapes[0];

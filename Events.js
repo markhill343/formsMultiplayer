@@ -58,4 +58,4 @@ export class EventStore {
         this.notify(event);
     }
 }
-//# sourceMappingURL=Events.js.map
+//# sourceMappingURL=events.js.map

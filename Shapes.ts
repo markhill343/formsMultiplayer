@@ -342,17 +342,23 @@ export class TriangleFactory implements ShapeFactory {
     handleMouseClick(x: number, y: number, e: MouseEvent) {
     }
 }
-    export class SelectionFactory implements ShapeFactory {
+export class SelectionFactory implements ShapeFactory {
     public label: string = "Selektion";
+    private mouseDown = false;
+    private oldCursorPosition: Point2D;
+    private mouseMove = false;
 
     constructor(readonly shapeManager: ShapeManager) {
     }
 
-    handleMouseDown(x: number, y: number, e: MouseEvent) {}
+    handleMouseDown(x: number, y: number, e: MouseEvent) {
+        this.mouseDown = true;
+        this.oldCursorPosition = new Point2D(x, y);
+    }
 
-    handleMouseMove(x: number, y: number) {}
+    //handleMouseMove(x: number, y: number) {}
 
-    handleMouseUp(x: number, y: number, e: MouseEvent) {}
+    //handleMouseUp(x: number, y: number, e: MouseEvent) {}
 
     handleMouseClick(x: number, y: number, e: MouseEvent) {
         this.shapeManager.isShapeOnClickedPoint(x,y);
@@ -364,5 +370,74 @@ export class TriangleFactory implements ShapeFactory {
             this.shapeManager.markShape()
         }
     }
-}
+
+
+    handleMouseMove(x: number, y: number) {
+        // If the mouse isn't pressed or there are no selected shapes, exit early.
+        if (!this.mouseDown || !this.shapeManager.getMarkedShapes()) return;
+
+        const selectedShapes = this.shapeManager.getMarkedShapes();
+
+        // If this is the beginning of the drag operation
+        if (!this.mouseMove) {
+            // Temporarily adjust the position of each selected shape based on the mouse move
+            selectedShapes.forEach((shape) => {
+                this.shapeManager.removeShapeWithId(shape.id, true, true);
+                this.shapeManager.addShape(this.newPosition(x, y, shape), true);
+            });
+            this.mouseMove = true;
+        } else {
+            // For ongoing drag operation, adjust the shapes' positions
+            selectedShapes.forEach((shape) => {
+                this.shapeManager.removeShapeWithId(shape.id, false);
+                this.shapeManager.addShape(this.newPosition(x, y, shape), true);
+            });
+        }
+
+        this.oldCursorPosition = new Point2D(x, y);
+    }
+
+    handleMouseUp(x: number, y: number) {
+        this.mouseDown = false;
+        if (this.mouseMove) {
+            // Update the position of selected shapes in the shapeManager directly
+            this.shapeManager.getMarkedShapes().forEach((shape) => {
+                this.shapeManager.addShape(shape);
+                this.shapeManager.markShape(shape.id);
+            });
+            this.mouseMove = false;
+        } else {
+            //this.selectShape(x, y);
+        }
+        this.mouseDown = false;
+    }
+
+    protected getShapeType(shape: Shape): string {
+        switch (true) {
+            case shape instanceof Line: return 'Line';
+            case shape instanceof Circle: return 'Circle';
+            case shape instanceof Rectangle: return 'Rectangle';
+            case shape instanceof Triangle: return 'Triangle';
+        }
+    }
+
+    private newPosition(x: number, y: number, shape: Shape): Shape {
+        const xDif = x - this.oldCursorPosition.x;
+        const yDif = y - this.oldCursorPosition.y;
+
+        if (shape instanceof Line || shape instanceof Rectangle) {
+            shape.from = new Point2D(shape.from.x + xDif, shape.from.y + yDif);
+            shape.to = new Point2D(shape.to.x + xDif, shape.to.y + yDif);
+        } else if (shape instanceof Circle) {
+            shape.center = new Point2D(shape.center.x + xDif, shape.center.y + yDif);
+        } else if (shape instanceof Triangle) {
+            shape.p1 = new Point2D(shape.p1.x + xDif, shape.p1.y + yDif);
+            shape.p2 = new Point2D(shape.p2.x + xDif, shape.p2.y + yDif);
+            shape.p3 = new Point2D(shape.p3.x + xDif, shape.p3.y + yDif);
+        }
+
+        return shape;
+    }
+
+    }
 

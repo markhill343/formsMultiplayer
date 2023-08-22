@@ -148,7 +148,7 @@ export class Canvas {
         });
         return isShapeOnPoint;
     }
-    markShape() {
+    markShape(id = null, redraw = true) {
         this.markedShapes.forEach(shape => {
             this.unMarkShape(shape);
         });
@@ -156,7 +156,7 @@ export class Canvas {
             this.addMarkShape(this.clickedShapesOnPoint[0]);
         }
     }
-    markShapes() {
+    markShapes(id = null, redraw = true) {
         if (this.clickedShapesOnPoint.length > 0) {
             this.addMarkShape(this.clickedShapesOnPoint[0]);
         }
@@ -168,12 +168,15 @@ export class Canvas {
             this.draw();
         }
     }
-    unMarkShape(shape2UnMark) {
+    unMarkShape(shape2UnMark, id = null, redraw = true) {
         const shape = this.shapes.get(shape2UnMark.id);
         if (shape !== undefined) {
             this.markedShapes = this.markedShapes.filter(shape => shape.id !== shape2UnMark.id);
             this.draw();
         }
+    }
+    getMarkedShapes() {
+        return this.markedShapes;
     }
     changeShapeOrder(toForeGround) {
         const shapeToMove = this.markedShapes[0];
