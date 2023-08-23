@@ -1,7 +1,7 @@
 import { Canvas } from "./Canvas.js";
 import {AddShapeEvent, EventStore, RemoveShapeEvent, SelectShapeEvent, UnselectShapeEvent} from "./Events.js";
 import {ShapeFactory, ShapeManager} from "./types.js";
-import {CircleFactory, LineFactory, RectangleFactory, TriangleFactory} from "./Shapes.js";
+import {CircleFactory, LineFactory, RectangleFactory, TriangleFactory, SelectionFactory} from "./Shapes.js";
 import { ToolArea } from "./ToolArea.js";
 
 export let clientId: string;
@@ -117,27 +117,29 @@ class DrawArea extends HTMLElement {
         this.eventStore = new EventStore(this.canvasId, this.webSocket);
 
         const sm: ShapeManager = {
-            addShape(s, rd, f) {
+            addShape: (s, rd, f) => {
                 this.eventStore.storeEvent(new AddShapeEvent(s,rd,f));
+                console.log(("added shape"));
                 return this;
+
             },
-            removeShape(s, rd) {
+            removeShape:(s, rd) => {
                 this.eventStore.storeEvent(new RemoveShapeEvent(s.id,rd,false));
                 return this;
             },
-            removeShapeWithId(id, rd,f) {
+            removeShapeWithId:(id, rd,f) => {
                 this.eventStore.storeEvent(new RemoveShapeEvent(id,true,f));
                 return this;
             },
-            markShape(id, rd) {
+            markShape:(id, rd)  => {
                 this.eventStore.storeEvent(new SelectShapeEvent(id, "red", rd));
                 return this;
             },
-            markShapes(id, rd) {
+            markShapes:(id, rd) => {
                 this.eventStore.storeEvent(new SelectShapeEvent(id, clientId, rd));
                 return this;
             },
-            unMarkShape(shape, id, rd) {
+            unMarkShape:(shape, id, rd) => {
                 this.eventStore.storeEvent(new UnselectShapeEvent(shape.id,clientId,rd));
                 return this;
             },
@@ -156,11 +158,11 @@ class DrawArea extends HTMLElement {
             },
 
              */
-            isShapeOnClickedPoint(x, y) {
+            isShapeOnClickedPoint: (x, y) => {
                 return canvas.isShapeOnClickedPoint(x,y);
             },
 
-            getMarkedShapes() {
+            getMarkedShapes: () => {
                 return canvas.getMarkedShapes();
             }
 
@@ -171,7 +173,8 @@ class DrawArea extends HTMLElement {
             new LineFactory(sm),
             new CircleFactory(sm),
             new RectangleFactory(sm),
-            new TriangleFactory(sm)
+            new TriangleFactory(sm),
+            new SelectionFactory(sm)
         ];
 
         const toolArea = new ToolArea(shapesSelector, this.menu);
@@ -181,7 +184,7 @@ class DrawArea extends HTMLElement {
     }
 
     private initWebSocket() {
-        this.webSocket = new WebSocket('ws://localhost:8080/channel');
+        //this.webSocket = new WebSocket('ws://localhost:3000/channel');
         this.webSocket.onopen = this.handleWebSocketOpen.bind(this);
         this.webSocket.onmessage = this.handleWebSocketMessage.bind(this);
         this.webSocket.onclose = this.handleWebSocketClose.bind(this);
@@ -208,8 +211,19 @@ class DrawArea extends HTMLElement {
 
     private handleWebSocketMessage(event: MessageEvent) {
         const json = JSON.parse(event.data);
-        if (json.canvasId && json.eventsCanvas) {
-            json.eventsCanvas.forEach((event: any) => {
+        if (json.command === "eventsCanvas" && Array.isArray(json.events)) {
+            json.events.forEach((eventObj: any) => {
+                if (eventObj.canvasId && eventObj.eventsCanvas) {
+                    eventObj.eventsCanvas.forEach((event: any) => {
+                        console.log("handling event", event);
+                        this.eventStore.executeEvent(event);
+                    });
+                }
+            });
+        } else if (json.command === "event" && json.event && Array.isArray(json.event.eventsCanvas)) {
+            console.log("Received new event:", json.event.eventsCanvas[0]);
+            json.event.eventsCanvas.forEach(event => {
+                console.log("Handling event:", event);
                 this.eventStore.executeEvent(event);
             });
         } else if (json.clientId) {
@@ -217,6 +231,7 @@ class DrawArea extends HTMLElement {
             console.log(`(Client ${clientId}) Connected to Canvas-${this.canvasId}`);
         }
     }
+
 
     private handleWebSocketClose() {
         console.log(`(Client ${clientId}) Disconnected from Canvas-${this.canvasId}.`);

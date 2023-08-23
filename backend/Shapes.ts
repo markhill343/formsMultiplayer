@@ -15,7 +15,7 @@ export class AbstractShape {
 
     order: number;
 
-    constructor(id = clientId + AbstractShape.counter++, fillColour = 'transparent', lineColour = 'rgb(0, 0, 0)', order = -1) {
+    constructor(id = clientId + AbstractShape.counter++, fillColour = 'red', lineColour = 'red', order = -1) {
         this.id = id
         this.fillColour = fillColour;
         this.lineColour = lineColour;
@@ -48,15 +48,20 @@ abstract class AbstractFactory<T extends Shape> {
 
     handleMouseUp(x: number, y: number) {
         // remove the temp line, if there was one
+        /*
         if (this.tmpShape) {
             this.shapeManager.removeShape(this.tmpShape, false);
         }
+
+         */
         this.shapeManager.addShape(this.createShape(this.from, new Point2D(x,y)));
         this.from = undefined;
 
     }
 
+
     handleMouseMove(x: number, y: number) {
+        /*
         // show temp circle only, if the start point is defined;
         if (!this.from) {
             return;
@@ -71,12 +76,14 @@ abstract class AbstractFactory<T extends Shape> {
             this.tmpShape = this.createShape(this.from, new Point2D(x,y));
             this.shapeManager.addShape(this.tmpShape);
         }
+
+         */
     }
 
 }
 export class Line extends AbstractShape implements Shape {
 
-    public readonly type = 'line';
+    public readonly type = 'Line';
 
     constructor(public from: Point2D, public to: Point2D, id?: string, fillcolour?: string, lineColour?: string, order?: number){
         super(id, fillcolour, lineColour, order);

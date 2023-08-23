@@ -13,8 +13,8 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
     private markedShapes: Shape[] = [];
     private clickedShapesOnPoint: Shape[] = [];
     private markedColour: string = 'rgb(0,255,115)';
-    private fillColour: string = 'transparent';
-    private lineColour: string =  'black';
+    private fillColour: string = 'red';
+    private lineColour: string =  'red';
 
     constructor(canvasDomElement: HTMLCanvasElement,
                 toolArea: ToolArea) {
@@ -83,10 +83,10 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
             case "removeShape":
                 this.removeShapeWithId(event.shapeId, event.redraw, event.Final);
                 break;
-            case 'markShape':
+            case 'selectShape':
                 this.markShape();
                 break;
-            case 'unmarkShape':
+            case 'unselectShape':
                 this.unMarkShape(event.shape);
                 break;
             default:

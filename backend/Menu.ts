@@ -9,39 +9,63 @@ class MenuPage extends HTMLElement {
     render() {
         this.shadowRoot.innerHTML = `
             <style>
-                .container button {
-                    height: 38px;
-                    margin-left: 8px;
-                    padding: 2px 4px;
-                    color: white;
-                    background-color: cornflowerblue;
-                    border: solid 2px cornflowerblue;
-                    border-radius: 4px;
+                .container {
+                    font-family: Arial, sans-serif;
+                    background-color: #F4F6F9;
+                    padding: 20px;
+                    border: 1px solid #DDE2E8;
+                    border-radius: 5px;
+                    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
                 }
-                .container button:hover{
-                    background-color: #4c7ace;
+                
+                .container button {
+                    height: 40px;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    color: white;
+                    background-color: #FF7F50; /* Coral Orange */
+                    border: none;
+                    border-radius: 5px;
+                    transition: all 0.3s;
                     cursor: pointer;
                 }
+                
+                .container button:hover {
+                    background-color: #FF6347; /* Lighter shade of Coral Orange */
+                }
+                
                 .container ul {
                     margin-top: 20px;
                     padding: 0;
                     list-style: none;
                 }
+                
                 .container ul li {
-                    margin: 8px;
-                    padding: 2px 4px;
-                    color: white;
-                    background-color: cornflowerblue;
-                    border-radius: 4px;
-                }
-                .container ul li:hover {
-                    background-color: #4c7ace;
+                    margin: 8px 0;
+                    padding: 8px 16px;
+                    background-color: #FFF;
+                    border-radius: 5px;
+                    border: 1px solid #DDE2E8;
+                    transition: all 0.3s;
                     cursor: pointer;
                 }
-                .container ul li a {
-                    display: inline-block;
-                    width: 100%;
+                
+                .container ul li:hover {
+                    background-color: #E8EAF0;
+                    color: #FF7F50; /* Coral Orange */
                 }
+                
+                .container ul li a {
+                    display: block;
+                    color: #232323;
+                    text-decoration: none;
+                    transition: color 0.3s;
+                }
+                
+                .container ul li a:hover {
+                    color: #FF7F50; /* Coral Orange */
+                }
+
             </style>
             <div class="container">
                 <button>Create Canvas</button>
@@ -80,6 +104,9 @@ class MenuPage extends HTMLElement {
             });
             console.log("Sending request:", response);
             const data = await response.json();
+            if (!data || !data.id) {
+                throw new Error("Canvas ID is not defined in server response");
+            }
             this.redirect(data);
         } catch (error) {
             console.error("Failed to create canvas:", error);
@@ -87,7 +114,7 @@ class MenuPage extends HTMLElement {
     }
 
     redirect(canvas) {
-        history.pushState(canvas, 'DrawArea', 'http://localhost:3000/canvas/' + canvas.id);
+        history.pushState(canvas, 'DrawArea', '/canvas/' + canvas.id);
         dispatchEvent(new PopStateEvent('popstate', { state: canvas }));
     }
 }

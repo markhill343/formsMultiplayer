@@ -73,7 +73,11 @@ export class EventStore {
 
     public storeEvent(event: ShapeEventInterface) {
         this.canvasEvent.eventsCanvas.push(event);
-        this.ws.send(JSON.stringify(this.canvasEvent, undefined, 4));
+        const message = {
+            command: 'event',
+            ...this.canvasEvent
+        };
+        this.ws.send(JSON.stringify(message, undefined, 4));
     }
 
     public executeEvent(event: ShapeEventInterface) {

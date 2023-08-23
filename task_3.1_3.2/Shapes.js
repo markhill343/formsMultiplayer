@@ -7,7 +7,7 @@ export class Point2D {
     }
 }
 export class AbstractShape {
-    constructor(id = AbstractShape.counter++, fillColour = 'transparent', lineColour = 'rgb(0, 0, 0)', order = -1) {
+    constructor(id = AbstractShape.counter++, fillColour = 'red', lineColour = 'red', order = -1) {
         this.id = id;
         this.fillColour = fillColour;
         this.lineColour = lineColour;
