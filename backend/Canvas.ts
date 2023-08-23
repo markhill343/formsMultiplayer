@@ -46,7 +46,6 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
             }
         });
 
-
     }
 
     createMouseHandler(methodName: string, canvasDomElement, toolArea) {
@@ -54,15 +53,13 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
             e = e || window.event;
 
             if ('object' === typeof e) {
+                const {left, top} = e.target.getBoundingClientRect();
                 const btnCode = e.button,
-                    x = e.pageX - canvasDomElement.offsetLeft,
-                    y = e.pageY - canvasDomElement.offsetTop,
+                    x = e.pageX - left,
+                    y = e.pageY - top,
                     ss = toolArea.getSelectedShape();
-                // if left mouse button is pressed,
-                // and if a tool is selected, do something
                 if (e.button === 0 && ss) {
                     const m = ss[methodName];
-                    // This in the shapeFactory should be the factory itself.
                     m.call(ss, x, y, e);
                 }
             }
@@ -146,10 +143,7 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
         if (isFinal) {
             if (this.shapes.has(id)) {
                 this.shapes.delete(id);
-
-                // Check if the number of shapes is less than 60% of the map size and if the map size is greater than 16
                 if (this.shapes.size * 0.6 > this.shapes.size && this.shapes.size > 16) {
-                    // Here you can resize the map or perform other operations if needed
                 }
 
                 if (redraw) {
@@ -273,7 +267,6 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
 
             // Mark the next shape
             this.addMarkShape(nextShapeToMark);
-
         }
     }
 
@@ -366,17 +359,4 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
 
 
 }
-
-
-//quellen:
-//https://stackoverflow.com/questions/14979753/how-do-you-add-radio-buttons-to-menu-items
-//https://www.javascripttutorial.net/javascript-dom/javascript-appendchild/
-//https://www.w3schools.com/jsref/met_node_insertbefore.asph
-//https://www.w3schools.com/js/js_function_definition.asp
-//https://www.javascripttutorial.net/javascript-immediately-invoked-function-expression-iife/
-//https://www.sitepoint.com/building-custom-right-click-context-menu-javascript/
-//https://www.w3schools.com/jsref/event_oncontextmenu.asp
-//https://help.syncfusion.com/typescript/radiobutton/getting-started
-//https://github.com/vpysaran/react-typescript-radiobutton
-
 

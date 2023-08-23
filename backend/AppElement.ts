@@ -30,19 +30,6 @@ class AppElement extends HTMLElement {
         shadow.appendChild(container);
     }
 
-    /*
-    handleInitialRedirect() {
-        const url = window.location.hash;
-        if (url.includes('canvas')) {
-            const canvasId = url.split('/').pop();
-            this.redirect({id: canvasId}, 'DrawArea', `/${url}`);
-        } else {
-            this.redirect(null, 'Menu', '/');
-        }
-    }
-
-     */
-
     handleInitialRedirect() {
         const url = window.location.hash;
         const container = this.shadowRoot.getElementById('container');
@@ -55,7 +42,6 @@ class AppElement extends HTMLElement {
             container.innerHTML = '<menu-page></menu-page>';
         }
     }
-
 
     addPopstateListener() {
         window.addEventListener('popstate', ({state}) => {
