@@ -1,5 +1,5 @@
 import {CanvasEventInterface, CanvasObserverInterface, ShapeEventInterface, Shape} from "./types";
-import {clientId} from "./init";
+
 export class CanvasEvent implements CanvasEventInterface {
     canvasId: string;
     eventsCanvas: ShapeEventInterface[];
@@ -13,12 +13,13 @@ export class CanvasEvent implements CanvasEventInterface {
 export class ShapeEvent implements ShapeEventInterface {
     readonly type: string;
     readonly clientId: string | undefined;
-    readonly shapeId: number;
+    readonly shapeId: string;
     readonly shape: Shape | undefined;
     readonly redraw: boolean;
     readonly Final: boolean;
 
-    constructor(type: string, clientId: string, shapeId: number, shape: Shape, redraw: boolean = true, Final: boolean = false) {
+
+    constructor(type: string, clientId: string, shapeId: string, shape: Shape, redraw: boolean = true, Final: boolean = false) {
         this.type = type;
         this.clientId = clientId;
         this.shapeId = shapeId;
@@ -35,19 +36,19 @@ export class AddShapeEvent extends ShapeEvent {
 }
 
 export class RemoveShapeEvent extends ShapeEvent {
-    constructor(id: number, redraw: boolean, Final: boolean) {
+    constructor(id: string, redraw: boolean, Final: boolean) {
         super('removeShape', undefined, id, undefined, redraw, Final);
     }
 }
 
 export class SelectShapeEvent extends ShapeEvent {
-    constructor(id: number, redraw: boolean) {
-        super('selectShape', clientId, id, undefined, redraw);
+    constructor(id: string, color: string, redraw: boolean) {
+        super('selectShape', color, id, undefined, redraw);
     }
 }
 
 export class UnselectShapeEvent extends ShapeEvent {
-    constructor(id: number, redraw: boolean) {
+    constructor(id: string, clientId: string, redraw: boolean) {
         super('unselectShape', clientId, id, undefined, redraw);
     }
 }

@@ -1,5 +1,5 @@
 export interface Shape {
-    readonly id: number;
+    readonly id: string;
     readonly type: string;
     fillColour: string;
     lineColour: string;
@@ -13,9 +13,9 @@ export interface Shape {
 export interface ShapeManager {
     addShape(shape: Shape, redraw?: boolean, Final?: boolean, index?: number);
     removeShape(shape: Shape, redraw: boolean);
-    removeShapeWithId(id?: number, redraw?: boolean, Final?: boolean);
-    markShape(id?: number, redraw?: boolean);
-    markShapes(id?: number, redraw?: boolean);
+    removeShapeWithId(id?: string, redraw?: boolean, Final?: boolean);
+    markShape(id?: string, redraw?: boolean);
+    markShapes(id?: string, redraw?: boolean);
     unMarkShape(shape: Shape, id?: number, redraw?: boolean);
     isShapeOnClickedPoint(x,y);
     iterateShapes?();
@@ -42,7 +42,7 @@ export interface CanvasEventInterface {
 export interface ShapeEventInterface {
     readonly type: string;
     readonly clientId?: string;
-    readonly shapeId?: number;
+    readonly shapeId?: string;
     readonly shape?: Shape;
     readonly redraw?: boolean;
     readonly Final?: boolean;
@@ -51,7 +51,7 @@ export interface ShapeEventInterface {
 export class ShapeArray {
     public length: number = 0;
     private array: (Shape | null)[] = [];
-    private lookUp: { [id: number]: number } = {}
+    private lookUp: { [id: string]: number } = {}
     private numOfShapesWithGaps: number = 0;
 
     constructor(private readonly gap: number = 8) {
@@ -63,12 +63,12 @@ export class ShapeArray {
         });
     }
 
-    public getById(id: number): Shape | undefined {
+    public getById(id: string): Shape | undefined {
         const index = this.lookUp[id];
         return this.array[index] || undefined;
     }
 
-    public moveTo(id: number, to: number): void {
+    public moveTo(id: string, to: number): void {
         const from = this.lookUp[id];
         if (from === to) return;
 
@@ -92,7 +92,7 @@ export class ShapeArray {
         return this.length - 1;
     }
 
-    public removeWithId(id: number): this | undefined {
+    public removeWithId(id: string): this | undefined {
         const index = this.lookUp[id];
         if (index === undefined) return;
 

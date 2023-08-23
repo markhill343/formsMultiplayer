@@ -112,7 +112,7 @@ class DrawArea extends HTMLElement {
     private initCanvasAndTools() {
         // Initialize Canvas, EventStore, tools, and shapes for drawing
         let canvas: Canvas;
-        this.webSocket = new WebSocket('ws://localhost:8080/channel');
+        this.webSocket = new WebSocket('ws://localhost:3000/channel');
         const ws = this.webSocket;
         this.eventStore = new EventStore(this.canvasId, this.webSocket);
 
@@ -130,15 +130,15 @@ class DrawArea extends HTMLElement {
                 return this;
             },
             markShape(id, rd) {
-                this.eventStore.storeEvent(new SelectShapeEvent(id,rd));
+                this.eventStore.storeEvent(new SelectShapeEvent(id, "red", rd));
                 return this;
             },
             markShapes(id, rd) {
-                this.eventStore.storeEvent(new SelectShapeEvent(id,rd));
+                this.eventStore.storeEvent(new SelectShapeEvent(id, clientId, rd));
                 return this;
             },
-            unMarkShape(cid, id, rd) {
-                this.eventStore.storeEvent(new UnselectShapeEvent(id,rd));
+            unMarkShape(shape, id, rd) {
+                this.eventStore.storeEvent(new UnselectShapeEvent(shape.id,clientId,rd));
                 return this;
             },
             /*

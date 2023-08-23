@@ -1,4 +1,5 @@
 import {Shape, ShapeFactory, ShapeManager} from "./types";
+import {clientId} from "./CanvasDraw.js";
 
 const MARKER_SIZE = 10;  // size of the marker rectangle
 const MARKER_COLOR = 'blue';  // color of the marker
@@ -8,13 +9,13 @@ export class Point2D {
 }
 export class AbstractShape {
     private static counter: number = 0;
-    readonly id: number;
+    readonly id: string;
     fillColour: string;
     lineColour: string;
 
     order: number;
 
-    constructor(id = AbstractShape.counter++, fillColour = 'transparent', lineColour = 'rgb(0, 0, 0)', order = -1) {
+    constructor(id = clientId + AbstractShape.counter++, fillColour = 'transparent', lineColour = 'rgb(0, 0, 0)', order = -1) {
         this.id = id
         this.fillColour = fillColour;
         this.lineColour = lineColour;
@@ -77,7 +78,7 @@ export class Line extends AbstractShape implements Shape {
 
     public readonly type = 'line';
 
-    constructor(public from: Point2D, public to: Point2D, id?: number, fillcolour?: string, lineColour?: string, order?: number){
+    constructor(public from: Point2D, public to: Point2D, id?: string, fillcolour?: string, lineColour?: string, order?: number){
         super(id, fillcolour, lineColour, order);
     }
 
@@ -132,7 +133,7 @@ export class Circle extends AbstractShape implements Shape {
 
     public readonly type = 'Circle';
 
-    constructor(public center: Point2D, public radius: number, id?: number, fillcolour?: string, lineColour?: string, order?: number){
+    constructor(public center: Point2D, public radius: number, id?: string, fillcolour?: string, lineColour?: string, order?: number){
         super(id, fillcolour, lineColour, order);
     }
     draw(ctx: CanvasRenderingContext2D, IsMarked?: boolean) {
@@ -185,7 +186,7 @@ export class Rectangle extends AbstractShape implements Shape {
 
     public readonly type = 'Rectangle';
 
-    constructor(public from: Point2D, public to: Point2D, id?: number, fillcolour?: string, lineColour?: string, order?: number){
+    constructor(public from: Point2D, public to: Point2D, id?: string, fillcolour?: string, lineColour?: string, order?: number){
         super(id, fillcolour, lineColour, order);
     }
 
@@ -228,7 +229,7 @@ export class Triangle extends AbstractShape implements Shape {
 
     public readonly type = 'Triangle';
 
-    constructor(public p1: Point2D, public p2: Point2D, public p3: Point2D, id?: number, fillcolour?: string, lineColour?: string, order?: number){
+    constructor(public p1: Point2D, public p2: Point2D, public p3: Point2D, id?: string, fillcolour?: string, lineColour?: string, order?: number){
         super(id, fillcolour, lineColour, order);
     }
     draw(ctx: CanvasRenderingContext2D, IsMarked?: boolean) {

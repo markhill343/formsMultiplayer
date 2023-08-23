@@ -19,6 +19,7 @@ app.use(express.json()); // For parsing JSON request bodies
 // Create new canvas
 app.post('/api/canvas', (req, res) => {
     const canvas = {};
+    console.log("create ")
     canvasDB.insert(canvas, (err, newDoc) => {
         if (err) {
             res.status(500).send(err);
@@ -30,6 +31,7 @@ app.post('/api/canvas', (req, res) => {
 
 // Get all canvases
 app.get('/api/canvas', (req, res) => {
+    console.log("get all ")
     canvasDB.find({}, (err, docs) => {
         if (err) {
             res.status(500).send(err);
@@ -41,6 +43,7 @@ app.get('/api/canvas', (req, res) => {
 
 // Get a specific canvas
 app.get('/api/canvas/:canvasId', (req, res) => {
+    console.log("create id ")
     const canvasId = req.params.canvasId;
     canvasDB.findOne({ _id: canvasId }, (err, doc) => {
         if (err) {

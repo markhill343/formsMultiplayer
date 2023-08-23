@@ -54,7 +54,7 @@ class MenuPage extends HTMLElement {
 
     async fetchCanvasSessions() {
         try {
-            const response = await fetch('/api/canvas');
+            const response = await fetch('http://localhost:3000/api/canvas');
             const data = await response.json();
             const ul = this.shadowRoot.querySelector('ul');
             data.forEach((canvas, index) => {
@@ -72,12 +72,13 @@ class MenuPage extends HTMLElement {
 
     async createCanvas() {
         try {
-            const response = await fetch('/api/canvas', {
+            const response = await fetch('http://localhost:3000/api/canvas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log("Sending request:", response);
             const data = await response.json();
             this.redirect(data);
         } catch (error) {
@@ -86,7 +87,7 @@ class MenuPage extends HTMLElement {
     }
 
     redirect(canvas) {
-        history.pushState(canvas, 'DrawArea', '/canvas/' + canvas.id);
+        history.pushState(canvas, 'DrawArea', 'http://localhost:3000/canvas/' + canvas.id);
         dispatchEvent(new PopStateEvent('popstate', { state: canvas }));
     }
 }

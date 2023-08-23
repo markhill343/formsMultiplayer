@@ -30,6 +30,7 @@ class AppElement extends HTMLElement {
         shadow.appendChild(container);
     }
 
+    /*
     handleInitialRedirect() {
         const url = window.location.hash;
         if (url.includes('canvas')) {
@@ -39,6 +40,22 @@ class AppElement extends HTMLElement {
             this.redirect(null, 'Menu', '/');
         }
     }
+
+     */
+
+    handleInitialRedirect() {
+        const url = window.location.hash;
+        const container = this.shadowRoot.getElementById('container');
+        if (url.includes('canvas')) {
+            const canvasId = url.split('/').pop();
+            this.redirect({id: canvasId}, 'DrawArea', `/${url}`);
+            container.innerHTML = `<draw-area id="${canvasId}"></draw-area>`;
+        } else {
+            this.redirect(null, 'Menu', '/');
+            container.innerHTML = '<menu-page></menu-page>';
+        }
+    }
+
 
     addPopstateListener() {
         window.addEventListener('popstate', ({state}) => {

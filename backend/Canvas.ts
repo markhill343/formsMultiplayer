@@ -1,7 +1,7 @@
 import {Shape, ShapeManager, ShapeEventInterface, CanvasObserverInterface, ShapeArray} from "./types";
 import {ToolArea} from "./ToolArea";
 import {MenuApi} from "./menuApi.js"
-import{Line, Rectangle, Circle, Triangle} from "./Shapes";
+import{Line, Rectangle, Circle, Triangle} from "./Shapes.js";
 
 export class Canvas implements ShapeManager, CanvasObserverInterface {
     private ctx: CanvasRenderingContext2D;
@@ -9,7 +9,7 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
     private readonly width: number;
     private readonly height: number;
     //Hold the shapes depending on the state of the shape
-    private shapes: Map<number, Shape> = new Map();
+    private shapes: Map<string, Shape> = new Map();
     private markedShapes: Shape[] = [];
     private clickedShapesOnPoint: Shape[] = [];
     private markedColour: string = 'rgb(0,255,115)';
@@ -142,7 +142,7 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
         redraw ? this.draw() : this;
     }
 
-    removeShapeWithId(id: number, redraw: boolean = true, isFinal: boolean = false): this {
+    removeShapeWithId(id: string, redraw: boolean = true, isFinal: boolean = false): this {
         if (isFinal) {
             if (this.shapes.has(id)) {
                 this.shapes.delete(id);
@@ -184,7 +184,7 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
         return isShapeOnPoint;
     }
 
-    markShape(id: number = null, redraw: boolean = true) {
+    markShape(id: string = null, redraw: boolean = true) {
         this.markedShapes.forEach(shape => {
             this.unMarkShape(shape);
         });
@@ -193,7 +193,7 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
         }
     }
 
-    markShapes(id: number = null, redraw: boolean = true) {
+    markShapes(id: string = null, redraw: boolean = true) {
         if (this.clickedShapesOnPoint.length > 0) {
             this.addMarkShape(this.clickedShapesOnPoint[0]);
         }
@@ -240,7 +240,7 @@ export class Canvas implements ShapeManager, CanvasObserverInterface {
 
     private doMoveToBackground(shapeToMove: Shape) {
         // Create a new map that starts with the shape that should be at the start
-        const helperMap: Map<number, Shape> = new Map();
+        const helperMap: Map<string, Shape> = new Map();
         helperMap.set(shapeToMove.id, shapeToMove);
 
         // Combine the new map with the existing shapes map
