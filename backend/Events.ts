@@ -1,5 +1,5 @@
-import {CanvasEventInterface, CanvasObserverInterface, ShapeEventInterface, Shape} from "./types.js";
-import {clientId} from "./init.js";
+import {CanvasEventInterface, CanvasObserverInterface, ShapeEventInterface, Shape} from "./types";
+import {clientId} from "./init";
 export class CanvasEvent implements CanvasEventInterface {
     canvasId: string;
     eventsCanvas: ShapeEventInterface[];
@@ -56,7 +56,7 @@ export class EventStore {
     private observers: CanvasObserverInterface[] = [];
     private readonly canvasEvent: CanvasEventInterface;
 
-    constructor(private canvasId: string, private textArea: HTMLTextAreaElement) {
+    constructor(private canvasId: string, private ws: WebSocket) {
         this.canvasEvent = new CanvasEvent(this.canvasId);
     }
 
@@ -72,7 +72,7 @@ export class EventStore {
 
     public storeEvent(event: ShapeEventInterface) {
         this.canvasEvent.eventsCanvas.push(event);
-        this.textArea.value = JSON.stringify(this.canvasEvent, undefined, 4);
+        this.ws.send(JSON.stringify(this.canvasEvent, undefined, 4));
     }
 
     public executeEvent(event: ShapeEventInterface) {

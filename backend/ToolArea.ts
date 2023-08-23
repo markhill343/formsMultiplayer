@@ -1,4 +1,4 @@
-import {ShapeFactory} from "./types.js";
+import {ShapeFactory} from "./types";
 
 export class ToolArea {
     private selectedShape: ShapeFactory = undefined;

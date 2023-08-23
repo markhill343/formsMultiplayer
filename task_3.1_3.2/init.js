@@ -1,7 +1,7 @@
-import { CircleFactory, LineFactory, RectangleFactory, TriangleFactory, SelectionFactory } from "./Shapes.js";
-import { ToolArea } from "./ToolArea.js";
-import { Canvas } from "./Canvas.js";
-import { AddShapeEvent, EventStore, RemoveShapeEvent, SelectShapeEvent, UnselectShapeEvent } from "./Events.js";
+import { CircleFactory, LineFactory, RectangleFactory, TriangleFactory, SelectionFactory } from "./Shapes";
+import { ToolArea } from "./ToolArea";
+import { Canvas } from "./Canvas";
+import { AddShapeEvent, EventStore, RemoveShapeEvent, SelectShapeEvent, UnselectShapeEvent } from "./Events";
 export let clientId;
 function init() {
     const canvasDomElm = document.getElementById("drawArea");

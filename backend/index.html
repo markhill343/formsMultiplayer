@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Zeichenpogramm</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+
+    <script src="types.js" type="module"></script>
+    <script src="Shapes.js" type="module"></script>
+    <script src="ToolArea.js" type="module"></script>
+    <script src="Canvas.js" type="module"></script>
+    <script src="init.js" type="module"></script>
+    <script src="Events.js" type="module"></script>
+    <script src="AppElement.js" type="module"></script>
+    <script src="Menu.js" type="module"></script>
+
+<body>
+
+<p>Wählen Sie auf der linken Seite Ihr Zeichwerkzeug aus.
+Haben Sie eines ausgewählt, können Sie mit der Maus
+die entsprechenden Figuren zeichen. Typischerweise, indem
+Sie die Maus drücken, dann mit gedrückter Maustaste die
+Form bestimmen, und dann anschließend die Maustaste loslassen.
+</p>
+
+<ul class="tools">
+
+</ul>
+
+<canvas id="drawArea" width="900" height="800"></canvas>
+<label for="events"></label><textarea id="events"></textarea>
+<button id="loadBtn">Load Events</button>
+<button id="clearBtn">Clear Events</button>
+
+
+</body>
+</html>

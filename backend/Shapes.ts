@@ -1,4 +1,4 @@
-import {Shape, ShapeFactory, ShapeManager} from "./types.js";
+import {Shape, ShapeFactory, ShapeManager} from "./types";
 
 const MARKER_SIZE = 10;  // size of the marker rectangle
 const MARKER_COLOR = 'blue';  // color of the marker
